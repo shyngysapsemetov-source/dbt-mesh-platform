@@ -11,3 +11,6 @@ logs/
 
 .DS_Store
 dbt_internal_packages/
+
+# Coaching ledger — private review notes, not part of the learning log
+notes/.coach-ledger.md
