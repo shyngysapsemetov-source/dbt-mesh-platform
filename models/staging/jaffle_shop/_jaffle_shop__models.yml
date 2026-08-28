@@ -1,0 +1,114 @@
+models:
+  - name: stg_jaffle_shop__customers
+    description: >
+      One record per customer, from the `customers` source table. Renaming only.
+    columns:
+      - name: customer_id
+        description: Primary key. Renamed from the source's `id`.
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        description: Full name of the customer, renamed from the source's `name`.
+
+  - name: stg_jaffle_shop__locations
+    description: >
+      One record per store, from the `stores` source table. Renamed to "locations" to match
+      how the business refers to them.
+    columns:
+      - name: location_id
+        description: Primary key. Renamed from the source's `id`.
+        tests:
+          - not_null
+          - unique
+      - name: location_name
+        description: Name of the store, renamed from the source's `name`.
+      - name: tax_rate
+        description: Tax rate in force at the store, as a decimal fraction.
+      - name: location_opened_at
+        description: Timestamp the store opened, renamed from the source's `opened_at`.
+
+  - name: stg_jaffle_shop__order_items
+    description: >
+      One record per item within an order, from the `items` source table. Renaming only.
+    columns:
+      - name: order_item_id
+        description: Primary key. Renamed from the source's `id`.
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: Foreign key to the order this item belongs to.
+      - name: product_id
+        description: Foreign key to the product ordered, renamed from the source's `sku`.
+
+  - name: stg_jaffle_shop__orders
+    description: >
+      One record per order, from the `orders` source table. Monetary columns are converted
+      from cents to dollars and `ordered_at` is truncated to the day.
+    columns:
+      - name: order_id
+        description: Primary key. Renamed from the source's `id`.
+        tests:
+          - not_null
+          - unique
+      - name: location_id
+        description: Foreign key to the store the order was placed at, renamed from `store_id`.
+      - name: customer_id
+        description: Foreign key to the ordering customer, renamed from `customer`.
+      - name: order_total
+        description: Total value of the order in dollars, divided by 100 from source cents.
+      - name: tax_paid
+        description: Tax charged on the order in dollars, divided by 100 from source cents.
+      - name: ordered_at
+        description: >
+          Timestamp the order was placed, truncated to the day. The time of day is discarded
+          here, so it is not recoverable downstream.
+
+  - name: stg_jaffle_shop__products
+    description: >
+      One record per SKU sold, from the `products` source table. Price is converted from
+      cents to dollars and the product type is flattened into boolean flags.
+    columns:
+      - name: product_id
+        description: Primary key. Renamed from the source's `sku`.
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: Display name of the product, renamed from the source's `name`.
+      - name: product_type
+        description: Category of the product, such as `jaffle` or `beverage`.
+      - name: product_description
+        description: Long-form description of the product.
+      - name: product_price
+        description: List price in dollars, divided by 100 from source cents.
+      - name: is_food_item
+        description: True when `product_type` is `jaffle`. Never null.
+      - name: is_drink_item
+        description: True when `product_type` is `beverage`. Never null.
+
+  - name: stg_jaffle_shop__supplies
+    description: >
+      One record per supply per product, from the `supplies` source table. A single supply
+      can be used by several products, so the source's own `id` is not unique on its own.
+    columns:
+      - name: supply_uuid
+        description: >
+          Primary key. Surrogate key hashed from the source's `id` and `sku`, because the
+          grain is one row per supply *per product* rather than one row per supply.
+        tests:
+          - not_null
+          - unique
+      - name: supply_id
+        description: >
+          The supply's own identifier at source. Repeats across products, so it is not a key
+          for this model.
+      - name: product_id
+        description: Foreign key to the product this supply is used for, renamed from `sku`.
+      - name: supply_name
+        description: Name of the supply, renamed from the source's `name`.
+      - name: supply_cost
+        description: Cost of this supply for this product in dollars, divided by 100 from source cents.
+      - name: is_perishable_supply
+        description: True when the supply is perishable, renamed from the source's `perishable`.

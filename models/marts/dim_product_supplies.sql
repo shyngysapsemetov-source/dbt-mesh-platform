@@ -1,9 +1,9 @@
 with products as (
-    select * from {{ ref('stg_products') }}
+    select * from {{ ref('stg_jaffle_shop__products') }}
 ),
 
 supplies as (
-    select * from {{ ref('stg_supplies') }}
+    select * from {{ ref('stg_jaffle_shop__supplies') }}
 ),
 
 product_supplies_summary as (

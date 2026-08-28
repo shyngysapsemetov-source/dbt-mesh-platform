@@ -1,3 +1,31 @@
 models:
   - name: int_orders
-
+    description: >
+      One record per order, with the ordering customer and the store's attributes joined on.
+      The shared join step behind `fct_orders` and `fct_order_items`, so the enrichment is
+      resolved once rather than in each fact table.
+    columns:
+      - name: order_id
+        description: Primary key. One record per order.
+      - name: location_id
+        description: Foreign key to the store the order was placed at.
+      - name: customer_id
+        description: Foreign key to the customer who placed the order.
+      - name: order_total
+        description: Total value of the order in dollars.
+      - name: tax_paid
+        description: Tax charged on the order in dollars.
+      - name: ordered_at
+        description: Timestamp the order was placed, truncated to the day at staging.
+      - name: customer_name
+        description: >
+          Name of the ordering customer. Null when the order's `customer_id` has no matching
+          customer, since the join is a left join.
+      - name: location_name
+        description: >
+          Name of the store the order was placed at. Null when the order's `location_id` has
+          no matching store, since the join is a left join.
+      - name: tax_rate
+        description: Tax rate in force at the store, as a decimal fraction.
+      - name: location_opened_at
+        description: Timestamp the store opened.

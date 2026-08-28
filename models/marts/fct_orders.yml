@@ -1,0 +1,32 @@
+models:
+  - name: fct_orders
+    description: >
+      Order fact table — one record per order, enriched with the customer and location
+      attributes resolved in `int_orders`, plus the ordered date split into calendar parts.
+    columns:
+      - name: order_id
+        description: Primary key. One record per order.
+      - name: location_id
+        description: Foreign key to the store the order was placed at.
+      - name: customer_id
+        description: Foreign key to the customer who placed the order.
+      - name: order_total
+        description: Total value of the order in dollars, converted from cents at staging.
+      - name: tax_paid
+        description: Tax charged on the order in dollars, converted from cents at staging.
+      - name: ordered_at
+        description: Timestamp the order was placed, truncated to the day at staging.
+      - name: customer_name
+        description: Name of the ordering customer, carried from the customer dimension.
+      - name: location_name
+        description: Name of the store the order was placed at.
+      - name: tax_rate
+        description: Tax rate in force at the store, as a decimal fraction.
+      - name: location_opened_at
+        description: Timestamp the store opened.
+      - name: ordered_month
+        description: Calendar month of `ordered_at`, as a number from 1 to 12.
+      - name: ordered_day
+        description: Calendar day of month of `ordered_at`.
+      - name: ordered_year
+        description: Calendar year of `ordered_at`.

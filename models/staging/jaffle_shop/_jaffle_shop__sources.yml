@@ -16,6 +16,7 @@ sources:
       - name: items
         description: Items included in an order
       - name: stores
+        description: One record per physical store location
       - name: products
         description: One record per SKU for items sold in stores
       - name: supplies

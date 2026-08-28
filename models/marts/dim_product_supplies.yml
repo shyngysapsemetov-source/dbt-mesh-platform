@@ -1,0 +1,24 @@
+models:
+  - name: dim_product_supplies
+    description: >
+      Product dimension — one record per product sold, with the total cost of all supplies
+      needed to make it. Products with no supplies recorded keep a null `supply_cost`.
+    columns:
+      - name: product_id
+        description: Primary key. The product's SKU at source.
+      - name: product_name
+        description: Display name of the product.
+      - name: product_type
+        description: Category of the product, such as `jaffle` or `beverage`.
+      - name: product_description
+        description: Long-form description of the product.
+      - name: product_price
+        description: List price of the product in dollars, converted from cents at staging.
+      - name: is_food_item
+        description: True when the product is a jaffle.
+      - name: is_drink_item
+        description: True when the product is a beverage.
+      - name: supply_cost
+        description: >
+          Total cost in dollars of every supply used to make this product, summed across
+          supplies. Null when the product has no supplies recorded.

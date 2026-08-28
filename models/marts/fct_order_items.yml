@@ -1,0 +1,34 @@
+models:
+  - name: fct_order_items
+    description: >
+      Order line item fact table — one record per item within an order, with the parent
+      order's totals and its customer and location attributes joined on.
+    columns:
+      - name: order_item_id
+        description: Primary key. One record per item within an order.
+      - name: order_id
+        description: Foreign key to the order this item belongs to.
+      - name: product_id
+        description: Foreign key to the product ordered, the product's SKU at source.
+      - name: location_id
+        description: Foreign key to the store the parent order was placed at.
+      - name: customer_id
+        description: Foreign key to the customer who placed the parent order.
+      - name: order_total
+        description: >
+          Total value of the parent order in dollars. Repeated on every item of the order,
+          so summing it across rows overstates revenue.
+      - name: tax_paid
+        description: >
+          Tax charged on the parent order in dollars. Repeated on every item of the order,
+          so summing it across rows overstates tax.
+      - name: ordered_at
+        description: Timestamp the parent order was placed, truncated to the day at staging.
+      - name: customer_name
+        description: Name of the ordering customer.
+      - name: location_name
+        description: Name of the store the parent order was placed at.
+      - name: tax_rate
+        description: Tax rate in force at the store, as a decimal fraction.
+      - name: location_opened_at
+        description: Timestamp the store opened.

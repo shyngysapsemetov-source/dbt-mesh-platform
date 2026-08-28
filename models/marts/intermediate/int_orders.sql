@@ -1,13 +1,13 @@
 with orders as (
-    select * from {{ ref('stg_orders') }}
+    select * from {{ ref('stg_jaffle_shop__orders') }}
 ),
 
 customers as (
-    select * from {{ ref('stg_customers') }}
+    select * from {{ ref('stg_jaffle_shop__customers') }}
 ),
 
 locations as (
-    select * from {{ ref('stg_locations') }}
+    select * from {{ ref('stg_jaffle_shop__locations') }}
 ),
 
 joined as (
