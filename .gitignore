@@ -14,3 +14,17 @@ dbt_internal_packages/
 
 # Coaching ledger — private review notes, not part of the learning log
 notes/.coach-ledger.md
+
+# Credentials — never commit these. Added 2026-08-31: this repo had no
+# credential patterns at all. JSON matters because the BigQuery service-account
+# key is a .json; deliberately specific rather than a blanket *.json, which would
+# hide legitimate config.
+profiles.yml
+*.pem
+*.p8
+*.key
+keys/
+bq_dbt_sa.json
+*service-account*.json
+*serviceaccount*.json
+*credentials*.json
