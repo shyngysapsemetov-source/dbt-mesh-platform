@@ -2,11 +2,15 @@ version: 2
 
 sources:
   - name: jaffle_shop
-    # Course default is `raw`, changed to `raw_mesh`. raw.jaffle_shop already holds a
-    # different jaffle_shop dataset with colliding `customers` and `orders` tables,
-    # read by another project and a scheduled production job. Keep these separate.
-    database: raw_mesh
-    schema: jaffle_shop
+    # Course default is `raw.jaffle_shop`, and this deliberately is not that: `raw.jaffle_shop`
+    # already holds a *different* jaffle_shop dataset with colliding `customers` and `orders`
+    # tables, read by another project and a scheduled production job. Keep these separate.
+    #
+    # BigQuery has project.dataset.table where Snowflake had database.schema.table, one level
+    # shallower, so `raw_mesh` + `jaffle_shop` collapses into the single dataset
+    # `raw_mesh_jaffle_shop`. `database:` is omitted rather than set to the GCP project id:
+    # dbt defaults it to the target's project, which keeps that id out of this public repo.
+    schema: raw_mesh_jaffle_shop
     description: E-commerce data
     tables:
       - name: customers

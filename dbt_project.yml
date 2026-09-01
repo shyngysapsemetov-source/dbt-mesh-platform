@@ -2,7 +2,7 @@ name: core_platform
 version: "2.1.0"
 config-version: 2
 
-profile: "snowflake"
+profile: "mesh"          # renamed from "snowflake" by the BigQuery migration, 2026-09-01
 require-dbt-version: ">=1.6.0"
 
 model-paths: ["models"]
